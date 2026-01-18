@@ -6,7 +6,8 @@ select * from employees
 
 /*Task 2: Employees in the 'Engineering' department
 Write a query that displays first name, last name, and job title of employees working in the `Engineering` department.*/
-
+select first_name, last_name, job_title from employees
+where department = "Engineering"
 
 
 /*Task 3: Employees hired after 2018**
