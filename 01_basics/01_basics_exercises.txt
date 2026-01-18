@@ -45,4 +45,4 @@ Write a query that displays the first 3 employees sorted by hire date. Display o
 
 
 /*Task 10: Employees earning below the average salary
-Write a query that displays the first name and last name of employees whose salary is below the average salary in the company.*/
+Write a query that displays the first name and last name of employees whose salary is below the average salary in the company. --this is a bit harder */

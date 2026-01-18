@@ -12,38 +12,47 @@ where department = "Engineering"
 
 /*Task 3: Employees hired after 2018**
 Write a query that displays the first name, last name, and hire date of employees who were hired after 2018.*/
-
+SELECT first_name, last_name, hire_date  from employees
+where hire_date >= '2019-01-01' --its the simplest but not the best way of doing it. there is no YEAR function in sqlite
 
 
 /*Task 4: Sort employees by salary**
 Write a query that sorts employees by salary in descending order and displays first name, last name, and salary.*/
-
+SELECT first_name, last_name, salary  from employees
+order by salary d
 
 
 /*Task 5: Count the number of employees in each department**
 Write a query that counts the number of employees in each department and displays the department name and the number of employees.*/
-
+SELECT department, count(*) as count from employees
+group by department
 
 
 /*Task 6: Show unique job titles**
 Write a query that displays all unique job titles (i.e., no duplicates) in the company.*/
-
+select distinct(job_title) from employees 
 
 
 /*Task 7: Employees with a salary greater than 70,000
 Write a query that displays first name, last name, and salary of employees earning more than 70,000.*/
-
+select first_name, last_name, salary  from employees 
+where salary > 70000
 
 
 /*Task 8: Sort employees by hire date
 Write a query that sorts all employees by their hire date in ascending order.*/
-
+select * from employees 
+order by hire_date asc
 
 
 /*Task 9: Show the top 3 oldest employees
 Write a query that displays the first 3 employees sorted by hire date. Display only first name, last name, and hire date.*/
-
+select first_name , last_name , hire_date  from employees
+order by hire_date asc
+limit 3
 
 
 /*Task 10: Employees earning below the average salary
-Write a query that displays the first name and last name of employees whose salary is below the average salary in the company.*/
+Write a query that displays the first name and last name of employees whose salary is below the average salary in the company.*/ 
+select first_name , last_name, salary from employees 
+where salary < (select avg(salary) from employees)
