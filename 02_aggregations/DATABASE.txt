@@ -1,0 +1,76 @@
+
+-- 1) Dimension table: board games
+CREATE TABLE games (
+  game_id        INTEGER PRIMARY KEY,
+  title          TEXT NOT NULL,
+  genre          TEXT NOT NULL,         -- e.g., Strategy, Party, Coop
+  publisher      TEXT NOT NULL,
+  release_year   INTEGER NOT NULL,
+  play_time_min  INTEGER NOT NULL       -- typical play time
+);
+
+-- 2) Dimension table: customers
+CREATE TABLE customers (
+  customer_id   INTEGER PRIMARY KEY,
+  first_name    TEXT NOT NULL,
+  last_name     TEXT NOT NULL,
+  city          TEXT NOT NULL,
+  member_since  TEXT NOT NULL           -- ISO date: YYYY-MM-DD
+);
+
+-- 3) Fact table: gaming sessions in the café
+CREATE TABLE sessions (
+  session_id     INTEGER PRIMARY KEY,
+  session_date   TEXT NOT NULL,         -- ISO date: YYYY-MM-DD
+  customer_id    INTEGER NOT NULL,
+  game_id        INTEGER NOT NULL,
+  players        INTEGER NOT NULL CHECK (players >= 1),
+  hours_played   REAL NOT NULL CHECK (hours_played > 0),
+  table_fee      REAL NOT NULL CHECK (table_fee >= 0),
+  snacks_spend   REAL NOT NULL CHECK (snacks_spend >= 0),
+  FOREIGN KEY (customer_id) REFERENCES customers(customer_id),
+  FOREIGN KEY (game_id) REFERENCES games(game_id)
+);
+
+-- GAMES (8)
+INSERT INTO games (game_id, title, genre, publisher, release_year, play_time_min) VALUES
+(1, 'Catan', 'Strategy', 'Kosmos', 1995, 90),
+(2, 'Ticket to Ride', 'Family', 'Days of Wonder', 2004, 60),
+(3, 'Pandemic', 'Coop', 'Z-Man Games', 2008, 60),
+(4, 'Codenames', 'Party', 'Czech Games Edition', 2015, 15),
+(5, 'Carcassonne', 'Family', 'Hans im Gluck', 2000, 45),
+(6, 'Azul', 'Abstract', 'Next Move Games', 2017, 40),
+(7, 'Terraforming Mars', 'Strategy', 'FryxGames', 2016, 120),
+(8, '7 Wonders', 'Card Game', 'Repos Production', 2010, 30);
+
+-- CUSTOMERS (6)
+INSERT INTO customers (customer_id, first_name, last_name, city, member_since) VALUES
+(1, 'Maya', 'Nowak', 'Krakow', '2022-03-14'),
+(2, 'Oskar', 'Lis', 'Warsaw', '2021-11-02'),
+(3, 'Lena', 'Kowalska', 'Gdansk', '2023-01-20'),
+(4, 'Tomasz', 'Zielinski', 'Wroclaw', '2020-09-07'),
+(5, 'Julia', 'Wozniak', 'Poznan', '2022-06-30'),
+(6, 'Adam', 'Krawczyk', 'Warsaw', '2024-02-12');
+
+-- SESSIONS (20)  -> idealne pod SUM/AVG/MIN/MAX + GROUP BY + HAVING
+INSERT INTO sessions (session_id, session_date, customer_id, game_id, players, hours_played, table_fee, snacks_spend) VALUES
+(1,  '2025-11-02', 1, 4, 6, 1.0,  18.00, 46.50),
+(2,  '2025-11-05', 2, 7, 3, 2.5,  22.00, 28.00),
+(3,  '2025-11-05', 3, 2, 4, 1.5,  18.00, 19.50),
+(4,  '2025-11-07', 4, 1, 4, 2.0,  20.00, 24.00),
+(5,  '2025-11-09', 5, 6, 2, 1.2,  14.00, 12.00),
+(6,  '2025-11-10', 6, 4, 5, 1.0,  18.00, 33.00),
+(7,  '2025-11-12', 1, 3, 4, 1.8,  20.00, 21.00),
+(8,  '2025-11-12', 2, 8, 4, 1.1,  18.00, 17.50),
+(9,  '2025-11-14', 3, 5, 3, 1.3,  16.00, 15.00),
+(10, '2025-11-16', 4, 7, 4, 2.8,  22.00, 31.00),
+(11, '2025-11-18', 5, 2, 5, 1.6,  20.00, 26.00),
+(12, '2025-11-18', 6, 1, 3, 1.9,  20.00, 18.00),
+(13, '2025-11-20', 1, 6, 2, 1.0,  14.00,  9.50),
+(14, '2025-11-22', 2, 4, 8, 1.2,  22.00, 52.00),
+(15, '2025-11-22', 3, 8, 4, 1.0,  18.00, 16.00),
+(16, '2025-11-24', 4, 3, 4, 2.0,  20.00, 23.50),
+(17, '2025-11-26', 5, 5, 4, 1.4,  18.00, 20.00),
+(18, '2025-11-27', 6, 7, 2, 3.2,  22.00, 14.00),
+(19, '2025-11-29', 1, 2, 3, 1.2,  16.00, 11.00),
+(20, '2025-12-01', 2, 1, 4, 2.1,  20.00, 22.00);
